@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explora Personajes de Pokémon y Rick y Morty</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Explora Personajes de Pokémon y Rick y Morty</h1>
+      <nav>
+        <button id="pokemon-btn">Pokémon</button>
+        <button id="rick-morty-btn">Rick y Morty</button>
+      </nav>
+    </header>
+    <main class="main-container">
+      <!-- Sección de Pokémon -->
+      <div id="pokemon-section">
+        <input
+          type="text"
+          id="pokemon-search"
+          placeholder="Buscar Pokémon..."
+        />
+        <div id="pokemon-characters" class="characters-container"></div>
+        <div class="pagination">
+          <button id="prev-pokemon" class="page-btn">Anterior</button>
+          <span id="pokemon-page-info"></span>
+          <button id="next-pokemon" class="page-btn">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Sección de Rick y Morty -->
+      <div id="rick-morty-section" class="hidden">
+        <input
+          type="text"
+          id="rick-morty-search"
+          placeholder="Buscar Personajes..."
+        />
+        <div id="rick-morty-characters" class="characters-container"></div>
+        <div class="pagination">
+          <button id="prev-rick-morty" class="page-btn">Anterior</button>
+          <span id="rick-morty-page-info"></span>
+          <button id="next-rick-morty" class="page-btn">Siguiente</button>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
