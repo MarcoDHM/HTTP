@@ -3,47 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actores y Películas Famosas</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+    <title>Famosos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .section {
+            display: none;
+            margin: 20px 0;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 15px;
+            width: 200px;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 4px;
+        }
+        .category {
+            text-align: center;
+            margin: 20px 0 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pagination button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Galería de Actores y Películas Famosas</h1>
-        <nav>
-            <button id="actors-btn">Actores</button>
-            <button id="movies-btn">Películas</button>
-        </nav>
-    </header>
 
-    <main>
-        <!-- Sección de Actores -->
-        <section id="actors-section" class="hidden">
-            <h2>Actores Famosos</h2>
-            <input type="text" id="actors-search" placeholder="Buscar Actor...">
-            <div id="actors-characters" class="characters-container"></div>
-            <div class="pagination">
-                <button id="prev-actors">&larr; Anterior</button>
-                <span id="actors-page-info">Página 1 de 10</span>
-                <button id="next-actors">Siguiente &rarr;</button>
-            </div>
-        </section>
+<header>
+    <h1>Famosos</h1>
+    <div class="nav">
+        <a href="#" onclick="showSection('actors-section')">Actores</a>
+        <a href="#" onclick="showSection('movies-section')">Películas</a>
+    </div>
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Buscar..." onkeyup="filterCards()">
+    </div>
+</header>
 
-        <!-- Sección de Películas -->
-        <section id="movies-section" class="hidden">
-            <h2>Películas Famosas</h2>
-            <input type="text" id="movies-search" placeholder="Buscar Película...">
-            <div id="movies-characters" class="characters-container"></div>
-            <div class="pagination">
-                <button id="prev-movies">&larr; Anterior</button>
-                <span id="movies-page-info">Página 1 de 10</span>
-                <button id="next-movies">Siguiente &rarr;</button>
-            </div>
-        </section>
-    </main>
+<div class="section" id="actors-section">
+    <div class="category">Actores</div>
+    <div class="cards" id="actor-cards"></div>
+    <div class="pagination">
+        <button onclick="prevPage()" id="prev-btn" disabled>Anterior</button>
+        <span id="page-info">1 de 10</span>
+        <button onclick="nextPage()" id="next-btn">Siguiente</button>
+    </div>
+</div>
 
-    <footer>
-        <p>&copy; 2024 - Galería de Actores y Películas Famosas</p>
-    </footer>
+<div class="section" id="movies-section">
+    <div class="category">Películas</div>
+    <div class="cards">
+        <div class="card" data-name="Inception">
+            <img src="https://via.placeholder.com/150" alt="Inception">
+            <h3>Inception</h3>
+            <p>Un thriller de ciencia ficción dirigido por Christopher Nolan.</p>
+        </div>
+        <div class="card" data-name="Titanic">
+            <img src="https://via.placeholder.com/150" alt="Titanic">
+            <h3>Titanic</h3>
+            <p>Un romance épico de James Cameron.</p>
+        </div>
+        <div class="card" data-name="The Avengers">
+            <img src="https://via.placeholder.com/150" alt="The Avengers">
+            <h3>The Avengers</h3>
+            <p>La reunión de los héroes más poderosos de la Tierra.</p>
+        </div>
+        <div class="card" data-name="La La Land">
+            <img src="https://via.placeholder.com/150" alt="La La Land">
+            <h3>La La Land</h3>
+            <p>Un musical moderno sobre la vida en Los Ángeles.</p>
+        </div>
+        <div class="card" data-name="Black Swan">
+            <img src="https://via.placeholder.com/150" alt="Black Swan">
+            <h3>Black Swan</h3>
+            <p>Un thriller psicológico sobre el ballet.</p>
+        </div>
+        <div class="card" data-name="Fight Club">
+            <img src="https://via.placeholder.com/150" alt="Fight Club">
+            <h3>Fight Club</h3>
+            <p>Un drama psicológico sobre la identidad y la sociedad.</p>
+        </div>
+        <div class="card" data-name="Iron Man">
+            <img src="https://via.placeholder.com/150" alt="Iron Man">
+            <h3>Iron Man</h3>
+            <p>La película que inició el Universo Cinematográfico de Marvel.</p>
+        </div>
+        <div class="card" data-name="Spider-Man: Homecoming">
+            <img src="https://via.placeholder.com/150" alt="Spider-Man: Homecoming">
+            <h3>Spider-Man: Homecoming</h3>
+            <p>La nueva aventura de Spider-Man.</p>
+        </div>
+        <div class="card" data-name="Jurassic Park">
+            <img src="https://via.placeholder.com/150" alt="Jurassic Park">
+            <h3>Jurassic Park</h3>
+            <p>Un clásico de aventuras sobre dinosaurios.</p>
+        </div>
+        <div class="card" data-name="The Dark Knight">
+            <img src="https://via.placeholder.com/150" alt="The Dark Knight">
+            <h3>The Dark Knight</h3>
+            <p>La aclamada secuela de Batman Begins.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Datos de los actores
+    const actors = [
+        { name: "Robert Downey Jr.", img: "https://via.placeholder.com/150?text=Robert+Downey+Jr.", desc: "Actor conocido por Iron Man." },
+        { name: "Scarlett Johansson", img: "https://via.placeholder.com/150?text=Scarlett+Johansson", desc: "Actriz destacada en el Universo Marvel." },
+        { name: "Chris Hemsworth", img: "https://via.placeholder.com/150?text=Chris+Hemsworth", desc: "Conocido como Thor." },
+        { name: "Tom Holland", img: "https://via.placeholder.com/150?text=Tom+Holland", desc: "El nuevo Spider-Man." },
+        { name: "Jennifer Lawrence", img: "https://via.placeholder.com/150?text=Jennifer+Lawrence", desc: "Ganadora del Oscar por 'Silver Linings Playbook'." },
+        { name: "Leonardo DiCaprio", img: "https://via.placeholder.com/150?text=Leonardo+DiCaprio", desc: "Famoso por 'Titanic' y 'Inception'." },
+        { name: "Natalie Portman", img: "https://via.placeholder.com/150?text=Natalie+Portman", desc: "Ganadora del Oscar por 'Black Swan'." },
+        { name: "Dwayne Johnson", img: "https://via.placeholder.com/150?text=Dwayne+Johnson", desc: "Conocido como 'The Rock'." },
+        { name: "Emma Stone", img: "https://via.placeholder.com/150?text=Emma+Stone", desc: "Ganadora del Oscar por 'La La Land'." },
+        { name: "Brad Pitt", img: "https://via.placeholder.com/150?text=Brad+Pitt", desc: "Conocido por 'Fight Club'." },
+        { name: "Gal Gadot", img: "https://via.placeholder.com/150?text=Gal+Gadot", desc: "Famosa por su papel como Wonder Woman." },
+        { name: "Ryan Reynolds", img: "https://via.placeholder.com/150?text=Ryan+Reynolds", desc: "Conocido por 'Deadpool'." },
+        { name: "Meryl Streep", img: "https://via.placeholder.com/150?text=Meryl+Streep", desc: "Reconocida por su talento actoral." },
+        { name: "Johnny Depp", img: "https://via.placeholder.com/150?text=Johnny+Depp", desc: "Famoso por 'Pirates of the Caribbean'." },
+        { name: "Hugh Jackman", img: "https://via.placeholder.com/150?text=Hugh+Jackman", desc: "Conocido como Wolverine." },
+        { name: "Mark Ruffalo", img: "https://via.placeholder.com/150?text=Mark+Ruffalo", desc: "Conocido por su papel de Hulk." },
+        { name: "Samuel L. Jackson", img: "https://via.placeholder.com/150?text=Samuel+L.+Jackson", desc: "Famoso por sus papeles en películas de acción." },
+        { name: "Anne Hathaway", img: "https://via.placeholder.com/150?text=Anne+Hathaway", desc: "Ganadora del Oscar por 'Les Misérables'." },
+        { name: "Chris Pratt", img: "https://via.placeholder.com/150?text=Chris+Pratt", desc: "Conocido por 'Guardians of the Galaxy'." },
+        { name: "Tom Hanks", img: "https://via.placeholder.com/150?text=Tom+Hanks", desc: "Famoso por 'Forrest Gump'." },
+        { name: "Jessica Chastain", img: "https://via.placeholder.com/150?text=Jessica+Chastain", desc: "Reconocida por 'Zero Dark Thirty'." },
+        { name: "Benedict Cumberbatch", img: "https://via.placeholder.com/150?text=Benedict+Cumberbatch", desc: "Famoso por su papel como Doctor Strange." },
+        { name: "Viola Davis", img: "https://via.placeholder.com/150?text=Viola+Davis", desc: "Ganadora del Oscar por 'Fences'." },
+        { name: "Daniel Craig", img: "https://via.placeholder.com/150?text=Daniel+Craig", desc: "Famoso por interpretar a James Bond." },
+        { name: "Kate Winslet", img: "https://via.placeholder.com/150?text=Kate+Winslet", desc: "Conocida por 'Titanic'." },
+        { name: "Charlize Theron", img: "https://via.placeholder.com/150?text=Charlize+Theron", desc: "Ganadora del Oscar por 'Monster'." },
+        { name: "Zoe Saldana", img: "https://via.placeholder.com/150?text=Zoe+Saldana", desc: "Conocida por 'Avatar' y 'Guardians of the Galaxy'." },
+        { name: "Anthony Hopkins", img: "https://via.placeholder.com/150?text=Anthony+Hopkins", desc: "Reconocido por 'The Silence of the Lambs'." },
+        { name: "Michael B. Jordan", img: "https://via.placeholder.com/150?text=Michael+B.+Jordan", desc: "Famoso por 'Black Panther'." },
+        { name: "Robert Pattinson", img: "https://via.placeholder.com/150?text=Robert+Pattinson", desc: "Conocido por 'Twilight' y 'The Batman'." },
+        { name: "Emma Watson", img: "https://via.placeholder.com/150?text=Emma+Watson", desc: "Famosa por 'Harry Potter'." },
+        { name: "Will Smith", img: "https://via.placeholder.com/150?text=Will+Smith", desc: "Reconocido por su trabajo en 'Men in Black'." },
+        { name: "Mila Kunis", img: "https://via.placeholder.com/150?text=Mila+Kunis", desc: "Conocida por 'Black Swan'." },
+        { name: "Ben Affleck", img: "https://via.placeholder.com/150?text=Ben+Affleck", desc: "Famoso por 'Batman v Superman'." },
+        { name: "Chris Evans", img: "https://via.placeholder.com/150?text=Chris+Evans", desc: "Conocido por interpretar a Captain America." },
+    ];
+
+    const itemsPerPage = 10;
+    let currentPage = 1;
+    const totalPages = Math.ceil(actors.length / itemsPerPage);
+
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+        if (sectionId === 'actors-section') {
+            loadActors();
+        }
+    }
+
+    function loadActors() {
+        const cardsContainer = document.getElementById('actor-cards');
+        cardsContainer.innerHTML = '';
+
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const currentActors = actors.slice(start, end);
+
+        currentActors.forEach(actor => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-name', actor.name);
+            card.innerHTML = `
+                <img src="${actor.img}" alt="${actor.name}">
+                <h3>${actor.name}</h3>
+                <p>${actor.desc}</p>
+            `;
+            cardsContainer.appendChild(card);
+        });
+
+        document.getElementById('page-info').textContent = `${currentPage} de ${totalPages}`;
+        document.getElementById('prev-btn').disabled = currentPage === 1;
+        document.getElementById('next-btn').disabled = currentPage === totalPages;
+    }
+
+    function filterCards() {
+        const searchTerm = document.getElementById('search').value.toLowerCase();
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name').toLowerCase();
+            card.style.display = name.includes(searchTerm) ? 'block' : 'none';
+        });
+    }
+
+    function nextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            loadActors();
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            loadActors();
+        }
+    }
+
+    // Show actors section by default
+    showSection('actors-section');
+</script>
+
 </body>
 </html>
